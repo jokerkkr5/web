@@ -1,25 +1,22 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::group(['namespace' => 'User'], function(){
+	Route::get('/', function(){
+		return dd(App\Model\user\Post::find(4)->tags);
+	});
+//	Route::get('/', 'HomeController@index')->name('index');
+	Route::get('/about', 'HomeController@about')->name('about');
+	Route::get('/contact', 'HomeController@contact')->name('contact');
+	Route::get('/post', 'PostsController@index')->name('post');
+});
 
-Route::get('/', function () {
-    return view('user.index');
-})->name('index');
-Route::get('/post', function () {
-    return view('user.front.post');
-})->name('post');
-Route::get('/about', function () {
-    return view('user.front.about');
-})->name('about');
-Route::get('/contact', function () {
-    return view('user.front.contact');
-})->name('contact');
+
+Route::group(['prefix'=>'admin', 'namespace'=>'Admin'], function(){
+	Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+	Route::resource('/posts', 'PostsController');
+	Route::resource('/tags', 'TagsController');
+	Route::resource('/categories', 'CategoriesController');
+	Route::resource('/users', 'UsersController');
+});
+
+
